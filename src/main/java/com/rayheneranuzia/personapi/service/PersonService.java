@@ -3,6 +3,7 @@ package com.rayheneranuzia.personapi.service;
 import com.rayheneranuzia.personapi.dto.request.PersonDTO;
 import com.rayheneranuzia.personapi.dto.response.MessageResponseDTO;
 import com.rayheneranuzia.personapi.entities.Person;
+import com.rayheneranuzia.personapi.exception.PersonNotFoundException;
 import com.rayheneranuzia.personapi.mapper.PersonMapper;
 import com.rayheneranuzia.personapi.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -42,5 +44,13 @@ public class PersonService {
                 .collect(Collectors.toList());
 
 
+    }
+
+
+    public PersonDTO findById(Long id) throws PersonNotFoundException {
+        Person person = personRepository.findById(id)
+                .orElseThrow(() -> new PersonNotFoundException(id));
+        
+        return personMapper.toDTO(person);
     }
 }

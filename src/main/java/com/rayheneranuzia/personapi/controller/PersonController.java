@@ -3,6 +3,7 @@ package com.rayheneranuzia.personapi.controller;
 import com.rayheneranuzia.personapi.dto.request.PersonDTO;
 import com.rayheneranuzia.personapi.dto.response.MessageResponseDTO;
 import com.rayheneranuzia.personapi.entities.Person;
+import com.rayheneranuzia.personapi.exception.PersonNotFoundException;
 import com.rayheneranuzia.personapi.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,5 +32,10 @@ public class PersonController {
     @GetMapping
     public List<PersonDTO> listAll(){
         return personService.listAll();
+    }
+
+    @GetMapping("/{id}")
+    public PersonDTO findByID(@PathVariable Long id) throws PersonNotFoundException {
+        return personService.findById(id);
     }
 }
